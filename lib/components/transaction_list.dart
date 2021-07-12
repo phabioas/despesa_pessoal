@@ -1,3 +1,5 @@
+import 'package:despesa_pessoal/components/buttonCancel.dart';
+import 'package:despesa_pessoal/components/buttonCheck.dart';
 import 'package:despesa_pessoal/components/transaction_list_blank.dart';
 import 'package:despesa_pessoal/models/transaction.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +33,7 @@ class TransactionList extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(6),
                         child: FittedBox(
-                            child: Text('R\$ ${t.value.toStringAsFixed(2)}')),
+                            child: Text('${t.value.toStringAsFixed(2)}')),
                       ),
                     ),
                     title: Text(
@@ -54,22 +56,14 @@ class TransactionList extends StatelessWidget {
                             ),
                             content: Text('Confirma exclusão da despesa?'),
                             actions: [
-                              ElevatedButton.icon(
-                                label: Text('Não'),
-                                icon: Icon(Icons.cancel),
-                                style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all(Colors.red)),
+                              ButtonCancel(
+                                text: 'Não',
                                 onPressed: () {
                                   Navigator.of(context).pop(false);
                                 },
                               ),
-                              ElevatedButton.icon(
-                                label: Text("Sim"),
-                                icon: Icon(Icons.check),
-                                style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                        Colors.green)),
+                              ButtonCheck(
+                                text: "Sim",
                                 onPressed: () {
                                   Navigator.of(context).pop(true);
                                 },
