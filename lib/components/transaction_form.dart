@@ -1,5 +1,8 @@
+import 'package:despesa_pessoal/components/adaptative_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import 'adaptative_button.dart';
 
 class TransactionForm extends StatefulWidget {
   final void Function(String, double, DateTime) onSave;
@@ -13,7 +16,7 @@ class TransactionForm extends StatefulWidget {
 class _TransactionFormState extends State<TransactionForm> {
   final titleControler = TextEditingController();
   final valorControler = TextEditingController();
-  DateTime? _selectDate;
+  DateTime? _selectDate = DateTime.now();
 
   submitForm() {
     final title = titleControler.text;
@@ -50,57 +53,60 @@ class _TransactionFormState extends State<TransactionForm> {
       elevation: 0,
     );
 
-    return Card(
-      elevation: 5,
-      child: Padding(
-        padding: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            TextField(
-              decoration: InputDecoration(labelText: 'Descrição'),
-              onSubmitted: (_) => submitForm(),
-              controller: titleControler,
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: 'Valor'),
-              controller: valorControler,
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              onSubmitted: (_) => submitForm(),
-            ),
-            Container(
-              height: 70,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Text(
-                      (this._selectDate != null)
-                          ? 'Data Selecionada: ${DateFormat('dd/MM/yyyy').format((_selectDate as DateTime))}'
-                          : 'Nenhuma data Selecionada',
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: 10 + MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Column(
+            children: [
+              AdaptativeTextField(
+                controller: titleControler,
+                label: 'Descrição',
+                hintLabel: 'Informe a despesa',
+                onSubmit: (_) => submitForm(),
+              ),
+              AdaptativeTextField(
+                controller: valorControler,
+                label: 'Valor',
+                hintLabel: 'Informe o valor da despesa',
+                textInputType: TextInputType.numberWithOptions(decimal: true),
+                onSubmit: (_) => submitForm(),
+              ),
+              Container(
+                height: 70,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        (this._selectDate != null)
+                            ? 'Data Selecionada: ${DateFormat('dd/MM/yyyy').format((_selectDate as DateTime))}'
+                            : 'Nenhuma data Selecionada',
+                      ),
                     ),
-                  ),
-                  ElevatedButton(
-                    style: styleButton,
-                    child: Text('Selecionar Data',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        )),
-                    onPressed: _showDatePicker,
+                    AdaptativeButton(
+                      label: 'Selecionar Data',
+                      onPressed: _showDatePicker,
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  AdaptativeButton(
+                    label: 'Incluir Transação',
+                    onPressed: () => submitForm(),
                   ),
                 ],
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ElevatedButton(
-                  onPressed: () => submitForm(),
-                  child: Text('Incluir Transação'),
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.purple, onSurface: Colors.purple[50]),
-                ),
-              ],
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

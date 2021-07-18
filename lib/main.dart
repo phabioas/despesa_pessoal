@@ -156,32 +156,37 @@ class _MyHomePageState extends State<MyHomePage> {
             : appBarAndroid.preferredSize.height) -
         _mediaQuery.padding.top;
 
-    final _bodyPage = SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          if (!isLandscape || this._showChart)
-            Container(
-              height: avaliableHeight *
-                  ((isLandscape)
-                      ? 0.8
-                      : 0.3), // se paisagem exibir 80%, senão 30%
-              child: Chart(
-                recentTransaction: _recentTransaction,
+
+    // SafeArea serve para que o fluter dimensione o espaço da aplicação dentro
+    //da área disponível do dispositivo
+    final _bodyPage = SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            if (!isLandscape || this._showChart)
+              Container(
+                height: avaliableHeight *
+                    ((isLandscape)
+                        ? 0.8
+                        : 0.3), // se paisagem exibir 80%, senão 30%
+                child: Chart(
+                  recentTransaction: _recentTransaction,
+                ),
               ),
-            ),
-          if (!isLandscape || !this._showChart)
-            Container(
-              height: avaliableHeight *
-                  ((isLandscape)
-                      ? 1
-                      : 0.7), // se paisagem, exibir 100%, senão 70%
-              child: TransactionList(
-                transactions: _transactions,
-                quandoDeletar: _deleteTransaction,
+            if (!isLandscape || !this._showChart)
+              Container(
+                height: avaliableHeight *
+                    ((isLandscape)
+                        ? 1
+                        : 0.7), // se paisagem, exibir 100%, senão 70%
+                child: TransactionList(
+                  transactions: _transactions,
+                  quandoDeletar: _deleteTransaction,
+                ),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
 
