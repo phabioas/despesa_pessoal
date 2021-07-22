@@ -30,14 +30,6 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
-    final ButtonStyle styleButton = ElevatedButton.styleFrom(
-      textStyle: const TextStyle(
-        fontSize: 15,
-        color: Colors.black,
-      ),
-      shadowColor: null,
-      elevation: 0,
-    );
 
     return SingleChildScrollView(
       child: Card(
