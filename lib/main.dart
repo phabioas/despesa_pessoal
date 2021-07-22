@@ -50,12 +50,31 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+//WidgetsBindingObserver Sever para Monitorar o ciclo de vida da aplicação
+class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   // Lista de Despesas
   final List<Transaction> _transactions = TransactionProvider().getAll();
 
   // Exibir ou não o Gráfico (Usado no modo paisagem)
   bool _showChart = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addObserver(this); // Adiciono um observador na classe
+  }
+
+  // Método é chamado toda vez que o estado da aplicação se altera
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    WidgetsBinding.instance!.removeObserver(this); // Removo a observação da classe
+  }
 
   List<Transaction> get _recentTransaction {
     return _transactions.where((tr) {
@@ -155,7 +174,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ? appBarIos.preferredSize.height
             : appBarAndroid.preferredSize.height) -
         _mediaQuery.padding.top;
-
 
     // SafeArea serve para que o fluter dimensione o espaço da aplicação dentro
     //da área disponível do dispositivo
