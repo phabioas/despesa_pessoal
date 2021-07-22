@@ -1,7 +1,6 @@
+import 'package:despesa_pessoal/components/adaptative_date_picker.dart';
 import 'package:despesa_pessoal/components/adaptative_textfield.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-
 import 'adaptative_button.dart';
 
 class TransactionForm extends StatefulWidget {
@@ -27,19 +26,6 @@ class _TransactionFormState extends State<TransactionForm> {
     }
 
     widget.onSave(titleControler.text, valor, _selectDate!);
-  }
-
-  _showDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2019),
-      lastDate: DateTime.now(),
-    ).then((valueDate) {
-      setState(() {
-        _selectDate = valueDate;
-      });
-    });
   }
 
   @override
@@ -78,23 +64,13 @@ class _TransactionFormState extends State<TransactionForm> {
                 textInputType: TextInputType.numberWithOptions(decimal: true),
                 onSubmit: (_) => submitForm(),
               ),
-              Container(
-                height: 70,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        (this._selectDate != null)
-                            ? 'Data Selecionada: ${DateFormat('dd/MM/yyyy').format((_selectDate as DateTime))}'
-                            : 'Nenhuma data Selecionada',
-                      ),
-                    ),
-                    AdaptativeButton(
-                      label: 'Selecionar Data',
-                      onPressed: _showDatePicker,
-                    ),
-                  ],
-                ),
+              AdaptativeDatePicker(
+                selectedDate: _selectDate,
+                onDateChanged: (DateTime? newDate) {
+                  setState(() {
+                    _selectDate = newDate;
+                  });
+                },
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
